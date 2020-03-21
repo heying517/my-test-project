@@ -1,0 +1,14 @@
+{
+  "env": {
+    "browser": true
+  },
+  "globals": {
+    "G": false
+  },
+  "plugins": ["filenames"],
+  "rules": {
+    "filenames/match-regex": ["error", "^[a-z0-9_-]+$", true],
+    "filenames/match-exported": ["error", "kebab"],
+    "jsx-a11y/click-events-have-key-events": "warn"
+  }
+}
