@@ -1,6 +1,6 @@
-import React from 'react';
+import React from "react";
 
-import './style/index.less';
+import "./style/index.less";
 
 export default function NotFound404(props) {
   return (
