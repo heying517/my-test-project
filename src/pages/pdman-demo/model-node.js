@@ -1,4 +1,7 @@
 import G6 from "@antv/g6";
+import {
+  getMax
+} from "./utils";
 
 const colorMap = {
   A: "#72CC4A",
@@ -26,10 +29,13 @@ const modelNode = () => {
   const padding = [5, 10];
   const anchorR = 4;
   G6.registerNode(
-    "round-rect",
-    {
+    "round-rect", {
       drawShape: function drawShape(cfg, group) {
-        const { width, stroke } = cfg.style;
+        const {
+          stroke
+        } = cfg.style;
+        const maxObject = getMax(cfg.panels);
+        const width = maxObject.max * 10;
         const height = tHeight + lineHeight * cfg.panels.length + padding[0];
         const shap = group.addShape("rect", {
           attrs: {
@@ -71,59 +77,72 @@ const modelNode = () => {
         // The content list
         cfg.panels.forEach((item, index) => {
           // name text
-          group.addShape("text", {
-            attrs: {
-              textBaseline: "top",
-              y: lineHeight + padding[0] + index * lineHeight,
-              x: padding[1],
-              lineHeight,
-              text:
-                typeof item.title === "string" && item.title.length > 15
-                  ? `${item.title.substring(0, 16)}...`
-                  : item.title,
-              fill: "rgba(0,0,0, 0.4)",
-              draggable: true,
-            },
-            name: `table-list-left-${index}==>${item.title}`,
-          });
-          // value text
-          group.addShape("text", {
-            attrs: {
-              textBaseline: "top",
-              y: lineHeight + padding[0] + index * lineHeight,
-              x: width - padding[1],
-              lineHeight,
-              text: item.value,
-              fill: "#595959",
-              textAlign: "right",
-            },
-            name: `table-list-right-${index}`,
-          });
-          // 锚点样式
-          group.addShape("circle", {
-            attrs: {
-              y: lineHeight + padding[1] + anchorR / 2 + index * lineHeight,
-              x: 0,
-              r: anchorR,
-              fill: "transparent",
-            },
-            name: `circle-shape-left-${index}`,
-          });
-          group.addShape("circle", {
-            attrs: {
-              y: lineHeight + padding[1] + anchorR / 2 + index * lineHeight,
-              x: width,
-              r: anchorR,
-              fill: "transparent",
-            },
-            name: `circle-shape-right-${index}`,
-          });
+          if (item.relationNoShow) {
+            group.addShape("text", {
+              attrs: {
+                textBaseline: "top",
+                y: lineHeight + padding[0] + index * lineHeight,
+                x: padding[1],
+                lineHeight,
+                text: item.name,
+                fill: "rgba(0,0,0, 0.4)",
+                draggable: true,
+              },
+              name: `table-list-left-${index}==>${item.title}`,
+            });
+            // type text
+            group.addShape("text", {
+              attrs: {
+                textBaseline: "top",
+                y: lineHeight + padding[0] + index * lineHeight,
+                x: item.notNull ? maxObject.maxNameType * 10 : maxObject.maxNameType * 10 - padding[1],
+                lineHeight,
+                text: item.type,
+                fill: "#595959",
+                textAlign: "right",
+              },
+              name: `table-list-right-${index}`,
+            });
+            // notNull text
+            if (item.notNull) {
+              group.addShape("text", {
+                attrs: {
+                  textBaseline: "top",
+                  y: lineHeight + padding[0] + index * lineHeight,
+                  x: (maxObject.maxNameType + 4) * 10 - padding[1],
+                  lineHeight,
+                  text: item.notNull,
+                  fill: "#595959",
+                  textAlign: "right",
+                },
+                name: `table-list-right-${index}`,
+              });
+            }
+            // 锚点样式
+            group.addShape("circle", {
+              attrs: {
+                y: lineHeight + padding[1] + anchorR / 2 + index * lineHeight,
+                x: 0,
+                r: anchorR,
+                fill: "transparent",
+              },
+              name: `circle-shape-left-${index}`,
+            });
+            group.addShape("circle", {
+              attrs: {
+                y: lineHeight + padding[1] + anchorR / 2 + index * lineHeight,
+                x: width,
+                r: anchorR,
+                fill: "transparent",
+              },
+              name: `circle-shape-right-${index}`,
+            });
+          }
         });
+
         return shap;
       },
       getAnchorPoints: function getAnchorPoints(cfg) {
-        console.log("getAnchorPoints");
-        console.log(cfg);
         const height = tHeight + lineHeight * cfg.panels.length + padding[0];
         return anchorPointsList(
           cfg.panels,
@@ -133,21 +152,13 @@ const modelNode = () => {
           padding
         );
       },
-      update: function update(cfg, item) {
-        const group = item.getContainer();
-        const children = group.get("children");
-        const node = children[0];
-        console.log(node);
-        console.log(children);
-        // const circleLeft = children[1];
-        // const circleRight = children[2];
-        // const { stroke } = cfg.style;
-        // if (stroke) {
-        //   node.attr("stroke", stroke);
-        //   circleLeft.attr("fill", stroke);
-        //   circleRight.attr("fill", stroke);
-        // }
-      },
+      // update: function update(cfg, item) {
+      //   const group = item.getContainer();
+      //   const children = group.get("children");
+      //   const node = children[0];
+      //   console.log(node);
+      //   console.log(children);
+      // },
       // 设置状态
       setState(name, value, item) {
         const group = item.getContainer();

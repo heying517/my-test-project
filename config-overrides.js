@@ -4,8 +4,14 @@ const rewireLess = require('react-app-rewire-less');
 // const rewireImport = require('react-app-rewire-import');
 
 const path = require('path');
-const { merge, fromPairs } = require('lodash');
-const { paths, injectBabelPlugin } = require('react-app-rewired');
+const {
+  merge,
+  fromPairs
+} = require('lodash');
+const {
+  paths,
+  injectBabelPlugin
+} = require('react-app-rewired');
 
 const craPaths = require(`${paths.scriptVersion}/config/paths`);
 // const pagePlugins = require('./scripts/pages');
@@ -46,7 +52,8 @@ module.exports = {
     config = injectBabelPlugin([
       '@babel/plugin-proposal-decorators', {
         legacy: true,
-      }], config);
+      }
+    ], config);
     config = injectBabelPlugin([
       'styled-jsx/babel',
     ], config);
@@ -54,9 +61,9 @@ module.exports = {
       javascriptEnabled: true,
       modifyVars: fromPairs(
         require('fs').readFileSync('./src/style/theme.less', 'utf-8').split('\n')
-          .map((line) => /^(@[\w-]+):\s*(.*);$/.exec(line))
-          .filter((item) => item)
-          .map((item) => [item[1].trim(), item[2].trim()]),
+        .map((line) => /^(@[\w-]+):\s*(.*);$/.exec(line))
+        .filter((item) => item)
+        .map((item) => [item[1].trim(), item[2].trim()]),
       ),
     })(config, env);
 
@@ -79,13 +86,13 @@ module.exports = {
 
     if (env === 'production') {
       // 压缩图片
-      const ImageminPlugin = require('imagemin-webpack-plugin').default;
-      config.plugins.push(new ImageminPlugin({
-        disable: process.env.NODE_ENV !== 'production',
-        pngquant: {
-          quality: '95-100',
-        },
-      }));
+      // const ImageminPlugin = require('imagemin-webpack-plugin').default;
+      // config.plugins.push(new ImageminPlugin({
+      //   disable: process.env.NODE_ENV !== 'production',
+      //   pngquant: {
+      //     quality: '95-100',
+      //   },
+      // }));
 
       // 预加载, 用于spa
       const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');

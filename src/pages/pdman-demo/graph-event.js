@@ -2,7 +2,7 @@
 /* eslint-disable prefer-destructuring */
 /* eslint-disable func-names */
 /* eslint-disable space-before-function-paren */
-const graphEvent = (graph, tooltipRef) => {
+const graphEvent = (graph) => {
   const nodeInfo = {
     addingEdge: false,
     edge: null,
@@ -63,7 +63,6 @@ const graphEvent = (graph, tooltipRef) => {
         }
       }
       if (haveEdge) {
-        console.log("重复");
         return;
       }
       graph.updateItem(nodeInfo.edge, {
@@ -96,7 +95,7 @@ const graphEvent = (graph, tooltipRef) => {
   });
 
   // 移动连线
-  graph.on("canvas:mousemove", function (ev) {
+  graph.on("mousemove", function (ev) {
     if (nodeInfo.addingEdge && nodeInfo.edge) {
       // Update the end node to the current node the mouse clicks
       // The current position the mouse clicks
@@ -136,25 +135,27 @@ const graphEvent = (graph, tooltipRef) => {
     ) {
       graph.setItemState(node, "selected", true); // 切换选中
     }
-    if (!nodeInfo.addingEdge &&
-      !nodeInfo.edge &&
-      ev.target.cfg.name &&
-      ev.target.cfg.name.indexOf("table-list-left-") > -1 &&
-      ev.target.cfg.attrs.text &&
-      ev.target.cfg.attrs.text.indexOf("...") > -1
-    ) {
-      tooltipRef.current.innerHTML = ev.target.cfg.name.split("==>")[1];
-      tooltipRef.current.style.top = `${ev.target.cfg.canvasBBox.y - 30  }px`;
-      tooltipRef.current.style.left = `${ev.target.cfg.canvasBBox.x }px`;
-      tooltipRef.current.style.display = "block";
-    }
+
+
+    // if (!nodeInfo.addingEdge &&
+    //   !nodeInfo.edge &&
+    //   ev.target.cfg.name &&
+    //   ev.target.cfg.name.indexOf("table-list-left-") > -1 &&
+    //   ev.target.cfg.attrs.text &&
+    //   ev.target.cfg.attrs.text.indexOf("...") > -1
+    // ) {
+    //   tooltipRef.current.innerHTML = ev.target.cfg.name.split("==>")[1];
+    //   tooltipRef.current.style.top = `${ev.target.cfg.canvasBBox.y - 30  }px`;
+    //   tooltipRef.current.style.left = `${ev.target.cfg.canvasBBox.x }px`;
+    //   tooltipRef.current.style.display = "block";
+    // }
   });
 
-  graph.on("node:mouseleave", function (ev) {
-    if (tooltipRef.current.style.display === "block") {
-      tooltipRef.current.style.display = "none";
-    }
-  });
+  // graph.on("node:mouseleave", function (ev) {
+  //   if (tooltipRef.current.style.display === "block") {
+  //     tooltipRef.current.style.display = "none";
+  //   }
+  // });
 
   // graph.on("node:mouseleave", function (ev) {
   //   const node = ev.item;
@@ -170,8 +171,6 @@ const graphEvent = (graph, tooltipRef) => {
   // graph.on("afterupdateitem", (e) => {
   //   console.log(e);
   // });
-
-
 }
 
 export default graphEvent;

@@ -8,162 +8,30 @@ import { Modal, Select } from "antd";
 import modelNode from "./model-node";
 import graphEvent from "./graph-event";
 import contextMenu from "./context-menu";
+import data from "./data";
 
 import "./index.less";
 
 const { Option } = Select;
 
-const data = {
-  nodes: [
-    {
-      id: "1",
-      title: "Company1",
-      x: 50,
-      y: 10,
-      panels: [
-        {
-          title: "abc",
-          value: "string",
-        },
-        {
-          title: "ahkshakshkaahkshakshkaahkshakshka",
-          value: "string",
-        },
-        {
-          title: "iiiisjasjaj",
-          value: "string",
-        },
-        {
-          title: "iiiisjasjaj",
-          value: "string",
-        },
-        {
-          title: "iiiisjasjaj",
-          value: "string",
-        },
-        {
-          title: "iiiisjasjaj",
-          value: "string",
-        },
-        {
-          title: "iiiisjasjaj",
-          value: "string",
-        },
-        {
-          title: "iiiisjasjaj",
-          value: "string",
-        },
-        {
-          title: "iiiisjasjaj",
-          value: "string",
-        },
-        {
-          title: "iiiisjasjaj",
-          value: "string",
-        },
-        {
-          title: "iiiisjasjaj",
-          value: "string",
-        },
-      ],
-    },
-    {
-      id: "2",
-      title: "Company2",
-      x: 300,
-      y: 20,
-      panels: [
-        {
-          title: "abc",
-          value: "string",
-        },
-        {
-          title: "ahkshakshka",
-          value: "string",
-        },
-        {
-          title: "iiiisjasjaj",
-          value: "string",
-        },
-      ],
-    },
-    {
-      id: "3",
-      title: "table3",
-      x: 600,
-      y: 70,
-      panels: [
-        {
-          title: "fdbvdshbg",
-          value: "string",
-        },
-        {
-          title: "qqq",
-          value: "string",
-        },
-        {
-          title: "axsas",
-          value: "int",
-        },
-      ],
-    },
-    // {
-    //   id: "4",
-    //   title: "table4",
-    //   panels: [
-    //     {
-    //       title: "fdbvdshbg",
-    //       value: "string",
-    //     },
-    //     {
-    //       title: "qqq",
-    //       value: "string",
-    //     },
-    //     {
-    //       title: "axsas",
-    //       value: "int",
-    //     },
-    //   ],
-    // },
-    // {
-    //   id: "5",
-    //   title: "table5",
-    //   panels: [
-    //     {
-    //       title: "fdbvdshbg",
-    //       value: "string",
-    //     },
-    //     {
-    //       title: "qqq",
-    //       value: "string",
-    //     },
-    //     {
-    //       title: "axsas",
-    //       value: "int",
-    //     },
-    //   ],
-    // },
-    // {
-    //   id: "6",
-    //   title: "table6",
-    //   panels: [
-    //     {
-    //       title: "fdbvdshbg",
-    //       value: "string",
-    //     },
-    //     {
-    //       title: "qqq",
-    //       value: "string",
-    //     },
-    //     {
-    //       title: "axsas",
-    //       value: "int",
-    //     },
-    //   ],
-    // },
-  ],
-  // edges: [],
-};
+// console.log(data);
+
+// const data = {
+//   nodes: [
+//     {
+//       id: "2",
+//       title: "Company2",
+//       x: 500,
+//       y: 20,
+//       panels: {fields:[
+//         {
+//           type: "abc",
+//           name: "string",
+//         },
+//       ]},
+//     },
+//   ],
+// };
 
 let graph = null;
 
@@ -175,7 +43,7 @@ const PdmanDemo = () => {
   const [to, setTo] = React.useState("1");
 
   const graphRef = React.useRef(null);
-  const tooltipRef = React.useRef(null);
+  // const tooltipRef = React.useRef(null);
 
   React.useEffect(() => {
     if (!graph) {
@@ -228,7 +96,6 @@ const PdmanDemo = () => {
           },
           style: {
             stroke: "#72CC4A",
-            width: 200,
           },
         },
         defaultEdge: {
@@ -254,7 +121,8 @@ const PdmanDemo = () => {
       graph.render();
     }
 
-    graphEvent(graph, tooltipRef);
+    // graphEvent(graph, tooltipRef);
+    graphEvent(graph);
 
     if (typeof window !== "undefined") {
       window.onresize = () => {
@@ -287,7 +155,7 @@ const PdmanDemo = () => {
   return (
     <div className="container">
       <div id="canvas" ref={graphRef} className="padman-demo" />
-      <div className="custom-tooltip" ref={tooltipRef} />
+      {/* <div className="custom-tooltip" ref={tooltipRef} /> */}
       <Modal
         visible={visible}
         title="编辑对应关系"
